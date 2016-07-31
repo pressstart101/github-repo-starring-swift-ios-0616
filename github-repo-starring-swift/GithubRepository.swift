@@ -9,20 +9,48 @@
 import UIKit
 
 class GithubRepository {
-    var fullName: String
+    var fullName: NSString
     var htmlURL: NSURL
-    var repositoryID: String
-    init(dictionary: NSDictionary) {
-        guard let
-            name = dictionary["full_name"] as? String,
-            valueAsString = dictionary["html_url"] as? String,
-            valueAsURL = NSURL(string: valueAsString),
-            repoID = dictionary["id"]?.stringValue
-            else { fatalError("Could not create repository object from supplied dictionary") }
+    var repositoryID: NSString
+    
+    init(dictionary:NSDictionary){
+        self.fullName = dictionary["full_name"] as! String
+        //NSURL(string: String)
         
-        htmlURL = valueAsURL
-        fullName = name
-        repositoryID = repoID
+        
+        let urlString = dictionary["html_url"] as! String
+        self.htmlURL = NSURL(string: urlString)!
+        //self.htmlURL = dictionary[ "html_url"] as? NSU
+        
+        self.repositoryID = (dictionary["id"]?.stringValue)!
+        
+        
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+//    var fullName: String
+//    var htmlURL: NSURL
+//    var repositoryID: String
+//    init(dictionary: NSDictionary) {
+//        guard let
+//            name = dictionary["full_name"] as? String,
+//            valueAsString = dictionary["html_url"] as? String,
+//            valueAsURL = NSURL(string: valueAsString),
+//            repoID = dictionary["id"]?.stringValue
+//            else { fatalError("Could not create repository object from supplied dictionary") }
+//        
+//        htmlURL = valueAsURL
+//        fullName = name
+//        repositoryID = repoID
+//    }
+    
 }
+
+

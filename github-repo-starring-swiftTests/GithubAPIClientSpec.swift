@@ -82,6 +82,7 @@ class GithubAPIClientSpec: QuickSpec {
                     GithubAPIClient.checkIfRepositoryIsStarred("wycats/merb-core", completion: { (starred) in
                         expect(starred).to(beFalsy())
                         done()
+                        
                     })
                 })
             }
