@@ -15,7 +15,7 @@ class GithubAPIClient {
      dataTaskWithURL if just reading JSON
      gotta be mutable in order to have access to addValue and HTTPMethod
      */
-    class func checkIsRepositoryIsStarred(fullname: String, completion: (Bool)-> ()){
+    class func checkIfRepositoryIsStarred(fullname: String, completion: (Bool)-> ()){
         let urlString = "https://api.github.com/user/starred/\(fullname)"
         let url = NSURL(string: urlString)
         let session = NSURLSession.sharedSession()

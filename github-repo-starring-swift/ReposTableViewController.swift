@@ -13,7 +13,7 @@ class ReposTableViewController: UITableViewController {
     //var store: ReposDataStore = ReposDataStore()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //definesPresentationContext = true
         self.tableView.accessibilityLabel = "tableView"
         self.tableView.accessibilityIdentifier = "tableView"
         store.getRepositoriesWithCompletion{
@@ -21,10 +21,6 @@ class ReposTableViewController: UITableViewController {
                 self.tableView.reloadData()
             }
         }
-        // GithubAPIClient.getRepositoriesWithCompletion()
-        //        print("stuff")
-        //        print(store)
-        //        print("stuff")
         
     }
     
@@ -43,26 +39,31 @@ class ReposTableViewController: UITableViewController {
         return cell
     }
     
-    
+   var alert1 = UIAlertController()
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
         let selectedRepo = store.repositories[indexPath.row]
-        
-        store.toggleStarStatusForRepository(selectedRepo){
-            print("toggggle")
-            GithubAPIClient.checkIsRepositoryIsStarred(selectedRepo.fullName as String) {(starred) in
-                if starred{
-                    let alert = UIAlertController.init(title:"", message: "You just starret \(selectedRepo.fullName)", preferredStyle: .Alert)
-                    alert.accessibilityLabel = "You just starred \(selectedRepo.fullName)"
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    //ugly as alerts, fix it may be one day
-                }else{
-                    let alert = UIAlertController.init(title:"", message: "You just upstarret \(selectedRepo.fullName)", preferredStyle: .Alert)
-                    alert.accessibilityLabel = "You just upstarred \(selectedRepo.fullName)"
-                    self.presentViewController(alert, animated: true, completion: nil)
-                }
-            }
+        let alert = UIAlertController.init(title:"", message: "", preferredStyle: .Alert)
+        alert.accessibilityLabel = "You just starred \(selectedRepo.fullName)"
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
         }
+        alert.addAction(OKAction)
+
         
+        GithubAPIClient.checkIfRepositoryIsStarred(selectedRepo.fullName as String) {(starred) in
+            if starred{
+                alert.message = "You just starred \(selectedRepo.fullName)"
+                self.presentViewController(alert, animated: true, completion: nil)
+            }else{
+                alert.message = "You just starred \(selectedRepo.fullName)"
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+            
+        }
+    store.toggleStarStatusForRepository(selectedRepo) { 
+        print("done")
+        }
+       
     }
     
     

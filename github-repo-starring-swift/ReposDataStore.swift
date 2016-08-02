@@ -13,25 +13,34 @@ class ReposDataStore {
     static let sharedInstance = ReposDataStore()
     var repositories:[GithubRepository] = []
     
-    func getRepositoriesWithCompletion(completion:()->()){
-        GithubAPIClient.getRepositoriesWithCompletion{(tempArray) in
+    
+    
+    
+    func getRepositoriesWithCompletion(completion: () -> ()) {
+        GithubAPIClient.getRepositoriesWithCompletion { (reposArray) in
             self.repositories.removeAll()
-            for git in tempArray{
-                let gitrepo = GithubRepository(dictionary: git as! NSDictionary)
-                self.repositories.append(gitrepo)
+            for dictionary in reposArray {
+                guard let repoDictionary = dictionary as? NSDictionary else { fatalError("Object in reposArray is of non-dictionary type") }
+                let repository = GithubRepository(dictionary: repoDictionary)
+                self.repositories.append(repository)
                 
             }
-            
-            if self.repositories.count > 0{
-                completion()
-                
-            }
-            //print(tempArray)
+            completion()
         }
-        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
     func toggleStarStatusForRepository(repository: GithubRepository, completion: ()-> ()){
-        GithubAPIClient.checkIsRepositoryIsStarred(repository.fullName as String){ (starred) in if starred{
+        GithubAPIClient.checkIfRepositoryIsStarred(repository.fullName as String){ (starred) in if starred{
             GithubAPIClient.unStarRepository(repository.fullName as String, completion: {
                 print("starring it")
                 completion()
@@ -51,37 +60,58 @@ class ReposDataStore {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    static let sharedInstance = ReposDataStore()
-//    private init() {}
 //    
-//    var repositories:[GithubRepository] = []
 //    
-//    func getRepositoriesWithCompletion(completion: () -> ()) {
-//        GithubAPIClient.getRepositoriesWithCompletion { (reposArray) in
+//        static let sharedInstance = ReposDataStore()
+//        private init() {}
+//    
+//        var repositories:[GithubRepository] = []
+//    
+//        func getRepositoriesWithCompletion(completion: () -> ()) {
+//            GithubAPIClient.getRepositoriesWithCompletion { (reposArray) in
+//                self.repositories.removeAll()
+//                for dictionary in reposArray {
+//                    guard let repoDictionary = dictionary as? NSDictionary else { fatalError("Object in reposArray is of non-dictionary type") }
+//                    let repository = GithubRepository(dictionary: repoDictionary)
+//                    self.repositories.append(repository)
+//    
+//                }
+//                completion()
+//            }
+//        }
+//  
+//    
+//    
+//    
+//    
+//    
+//    
+//    func getRepositoriesWithCompletion(completion:()->()){
+//        GithubAPIClient.getRepositoriesWithCompletion{(tempArray) in
 //            self.repositories.removeAll()
-//            for dictionary in reposArray {
-//                guard let repoDictionary = dictionary as? NSDictionary else { fatalError("Object in reposArray is of non-dictionary type") }
-//                let repository = GithubRepository(dictionary: repoDictionary)
-//                self.repositories.append(repository)
+//            for git in tempArray{
+//                let gitrepo = GithubRepository(dictionary: git as! NSDictionary)
+//                self.repositories.append(gitrepo)
 //                
 //            }
-//            completion()
+//            
+//            if self.repositories.count > 0{
+//                completion()
+//                
+//            }
+//            //print(tempArray)
 //        }
+//        
 //    }
+//    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }
